@@ -105,7 +105,83 @@ const loginModelByCred = async (identifier, password) => {
   };
 
   console.log('Login successful, creating token');
-  return jwt.sign(payload, config.secretKey, { expiresIn: '24h' });
+  const token = jwt.sign(payload, config.secretKey, { expiresIn: '24h' });
+  return { token, user: payload };
+};
+
+
+
+
+// Create travel listing
+const insertTravelListing = async (data, callback) => {
+  try {
+    const [result] = await db.query(
+      `INSERT INTO travel_listing (title, description, country, travelPeriod, price, imageURL, dateInserted)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      [
+        data.title,
+        data.description,
+        data.country,
+        data.travelPeriod,
+        data.price,
+        data.imageURL,
+        data.dateInserted,
+      ]
+    );
+    callback(null, result);
+  } catch (error) {
+    callback(error);
+  }
+};
+
+// ================ ITINERARY FUNCTIONS =================
+
+const selectItineraryByTravelId = async (travelID, callback) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT itineraryID, travelID, day, activity FROM itinerary WHERE travelID = ? ORDER BY day ASC',
+      [travelID]
+    );
+    callback(null, rows);
+  } catch (error) {
+    callback(error);
+  }
+};
+
+const selectItineraryByItineraryId = async (itineraryID, callback) => {
+  try {
+    const [rows] = await db.query(
+      'SELECT itineraryID, travelID, day, activity FROM itinerary WHERE itineraryID = ?',
+      [itineraryID]
+    );
+    callback(null, rows);
+  } catch (error) {
+    callback(error);
+  }
+};
+
+const updateItineraryByItineraryId = async (itineraryID, data, callback) => {
+  try {
+    const [result] = await db.query(
+      'UPDATE itinerary SET travelID = ?, day = ?, activity = ? WHERE itineraryID = ?',
+      [data.travelID, data.day, JSON.stringify(data.activity), itineraryID]
+    );
+    callback(null, result);
+  } catch (error) {
+    callback(error);
+  }
+};
+
+const deleteItineraryByItineraryId = async (itineraryID, callback) => {
+  try {
+    const [result] = await db.query(
+      'DELETE FROM itinerary WHERE itineraryID = ?',
+      [itineraryID]
+    );
+    callback(null, result);
+  } catch (error) {
+    callback(error);
+  }
 };
 
 module.exports = {
@@ -114,5 +190,10 @@ module.exports = {
   createUser,
   updateUserByUserid,
   dropUserByUserid,
-  loginModelByCred
+  loginModelByCred,
+  insertTravelListing,
+  selectItineraryByTravelId,
+  selectItineraryByItineraryId,
+  updateItineraryByItineraryId,
+  deleteItineraryByItineraryId
 };

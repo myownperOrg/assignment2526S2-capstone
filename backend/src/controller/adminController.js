@@ -30,9 +30,9 @@ const loginControl = async (req, res, next) => {
   console.log('Calling loginModelByCred with:', { identifier, password });
   
   try {
-    const token = await adminModel.loginModelByCred(identifier, password);
+    const authResult = await adminModel.loginModelByCred(identifier, password);
  // If token is null, login failed
-    if (!token) {
+    if (!authResult || !authResult.token) {
       return res.status(401).json({ 
         success: false, 
         message: 'Invalid email/username or password' 
@@ -43,12 +43,8 @@ const loginControl = async (req, res, next) => {
     res.status(200).json({ 
       success: true, 
       message: 'Login successful',
-      token: token,
-      // Optional: include user info
-      user: {
-        // You might want to decode the token or get user info from DB
-        // to include in response
-      }
+      token: authResult.token,
+      user: authResult.user
     });
   } catch (error) {
     console.error('Error in loginControl:', error.message);

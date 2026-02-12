@@ -49,7 +49,7 @@ const Login = () => {
         localStorage.setItem('token', response.data.token);
         
         // Store user info
-        if (response.data.user) {
+        if (response.data.user && response.data.user.role) {
           localStorage.setItem('user', JSON.stringify(response.data.user));
         } else {
           // Decode token to get user info
