@@ -113,6 +113,7 @@ export const travelService = {
   
   getListingById: (id) => api.get(`/travel-listings/${id}`),
   getItineraries: (travelId) => api.get(`/travel-listings/${travelId}/itineraries`),
+  createListing: (listingData) => api.post('/travel-listings', listingData),
   
   searchListings: async (query) => {
     console.log('TravelService: Searching for', query);

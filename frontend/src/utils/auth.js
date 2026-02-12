@@ -26,10 +26,18 @@ export const isAuthenticated = () => {
 export const getUserRole = () => {
   try {
     const user = localStorage.getItem('user');
-    if (!user) return null;
-    
-    const userData = JSON.parse(user);
-    return userData.role;
+    if (user) {
+      const userData = JSON.parse(user);
+      if (userData?.role) {
+        return userData.role;
+      }
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload?.role || null;
   } catch (error) {
     console.error('Error getting user role:', error);
     return null;

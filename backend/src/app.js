@@ -106,6 +106,11 @@ app.get('/test-token', authenticateToken, adminController.testToken);
 app.get('/travel-listings', 
     publicController.getAllTravelListings);
 
+// POST /travel-listings
+app.post('/travel-listings',
+    adminController.postTravelListing
+);
+
 
 // GET /travel-listings/search
 app.get('/travel-listings/search', 
@@ -120,6 +125,18 @@ app.get('/travel-listings/:travelID/itineraries',
 // GET /travel-listings/:travelID
 app.get('/travel-listings/:travelID', 
     publicController.getTravelListingByTravelid  // Just reference the controller method
+);
+
+// PUT /itineraries/:itineraryID
+app.put('/itineraries/:itineraryID',
+    validate.validateIntID('itineraryID'),
+    adminController.putItineraryByItineraryId
+);
+
+// DELETE /itineraries/:itineraryID
+app.delete('/itineraries/:itineraryID',
+    validate.validateIntID('itineraryID'),
+    adminController.delItineraryByItineraryId
 );
 
 
