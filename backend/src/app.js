@@ -32,33 +32,30 @@ app.use(express.json());  // Built-in Express JSON parser
 app.use(express.urlencoded({ extended: true }));
 
 
-baseURL = process.env.BASE_URL;
-reactURL = process.env.REACT_APP_API_URL;
+const allowedOrigins = [
+  process.env.BASE_URL,
+  process.env.FRONTEND_URL,
+  process.env.REACT_APP_FRONTEND_URL,
+  'http://localhost:3001',
+  'http://127.0.0.1:3001'
+].filter(Boolean);
 
-app.use(cors({
-  origin: [baseURL, reactURL],
+const corsOptions = {
+  origin(origin, callback) {
+    // Allow requests without an Origin header (e.g. Postman/server-to-server)
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked for origin: ${origin}`));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-}));
+};
 
-app.options('*', cors()); // include before other routes
+app.use(cors(corsOptions));
 
-
-
-// After your CORS configuration, add this:
-app.use((req, res, next) => {
-  // Allow all origins during development
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
-  }
-});
+app.options('*', cors(corsOptions));
 
 
 //-----Routes--------------
