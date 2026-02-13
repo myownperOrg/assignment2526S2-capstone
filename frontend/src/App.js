@@ -9,7 +9,7 @@ import Login from './pages/Login';
 import Users from './pages/Users';
 import Register from './pages/Register';
 import TravelListings from './pages/TravelListings';
-import TravelSelection from './pages/TravelSelection';
+import TravelSelection from './components/TravelSelection';
 import Itineraries from './pages/Itineraries';
 import { isAuthenticated, isAdmin } from './utils/auth';
 
