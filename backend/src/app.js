@@ -34,7 +34,6 @@ app.use(express.urlencoded({ extended: true }));
 
 const allowedOrigins = [
   process.env.BASE_URL,
-  process.env.FRONTEND_URL,
   process.env.REACT_APP_FRONTEND_URL,
   'http://localhost:3001',
   'http://127.0.0.1:3001'

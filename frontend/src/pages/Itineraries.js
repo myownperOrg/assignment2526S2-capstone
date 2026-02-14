@@ -54,7 +54,9 @@ function ShowItineraries() {
 
     const fetchItineraries = useCallback(async () => {
         try {
-            const response = await fetch(`http://localhost:3000/travel-listings/${travelId}/itineraries`, {
+
+            const baseurl = process.env.REACT_APP_BASE_URL;
+            const response = await fetch(baseurl + `/travel-listings/${travelId}/itineraries`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' }
             });
@@ -79,7 +81,8 @@ function ShowItineraries() {
             activity: nextActivities,
         };
 
-        const response = await fetch(`http://localhost:3000/itineraries/${itineraryID}`, {
+            const baseurl = process.env.REACT_APP_BASE_URL;
+            const response = await fetch(baseurl + `/itineraries/${itineraryID}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload),
@@ -91,7 +94,8 @@ function ShowItineraries() {
     };
 
     const deleteItinerary = async (itineraryID) => {
-        const response = await fetch(`http://localhost:3000/itineraries/${itineraryID}`, {
+            const baseurl = process.env.REACT_APP_BASE_URL;
+            const response = await fetch(baseurl + `/itineraries/${itineraryID}`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
         });
@@ -113,7 +117,8 @@ function ShowItineraries() {
             }],
         };
 
-        const response = await fetch(`http://localhost:3000/travel-listings/${travelId}/itinerary`, {
+            const baseurl = process.env.REACT_APP_BASE_URL;
+            const response = await fetch(baseurl + `/travel-listings/${travelId}/itinerary`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
