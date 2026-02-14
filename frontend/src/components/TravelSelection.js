@@ -1,4 +1,4 @@
-// \frontend/src/components/TravelSelection.js
+// \frontend/src/pages/TravelSelection.js
 
 import React from 'react';
 import { Box, TextField } from '@mui/material';
